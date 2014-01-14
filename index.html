@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SysInfo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      function ajaxCallback(oA, sTextStatus, oB) 
+      {
+        // The arguments oA and oB contain different things depending on
+        // success or error. It doesn't matter, we don't use them.
+        //if ( 'success' == sTextStatus ) 
+        //{
+          // start next update right away. Settings from $.ajaxSetup are
+          // used.
+        //  $.ajax({'data': { 'wait': 1 }});
+        //}
+        //else 
+        //{
+          // An error was returned from the server.
+          // Wait a half second before next update to prevent very fast
+          // looping.
+          window.setTimeout( $.ajax   // reference to function, no () here!
+                              , 5000      // milliseconds, 5 sec
+                               );
+       // }
+      }
+    
+      function GetClock()
+      {
+	d = new Date();
+	nday   = d.getDay();
+	nmonth = d.getMonth() + 1;
+	ndate  = d.getDate();
+	nyear = d.getYear();
+	nhour  = d.getHours();
+	nmin   = d.getMinutes();
+	nsec   = d.getSeconds();
+
+	if(nyear<1000) nyear=nyear+1900;
+
+     
+	if(nmin <= 9) {nmin = "0" +nmin;}
+	if(nsec <= 9) {nsec = "0" +nsec;}
+	if(nmonth <= 9) {nmonth = "0" +nmonth;}
+	if(ndate <= 9) {ndate = "0" +ndate;}
+     
+	document.getElementById('clockbox').innerHTML=""+nhour+":"+nmin+":"+nsec+"&nbsp;&nbsp;&nbsp;"+ndate+"-"+nmonth+"-"+nyear+"";
+      }
+
+
+      $(document).ready( function() 
+      {
+        // Setup the settings for jQuery Ajax. This way we don't need to
+        // pass them each time we do a call.
+        $.ajaxSetup({
+            'url':     'sysinfo.php'   // URL of the Ajax server
+            , 'cache':   false          // will add ?_=[number] to the url
+            , 'timeout': 5000         // milliseconds, 2.5 min
+            , 'success':  ajaxCallback  // reference to function, no () here!
+            , 'error':    ajaxCallback  // reference to function, no () here!
+        });
+
+        // Execute the first Ajax request. Settings from $.ajaxSetup are
+        // used.
+        // For the first request we set the 'force' parameter to make the
+        // server
+        // not wait for a change but send an update as soon as possible.
+        $.ajax();
+     //    window.setTimeout( $.ajax   // reference to function, no () here!
+       //                       , 200      // milliseconds, 2 sec
+         //                     );
+
+
+        // The code below is executed when the document finished loading
+//        GetClock();
+//     	setInterval( GetClock, 4000);
+//	window.stop();
+	
+      });
+
+    </script>
+
+    <style type="text/css">
+
+table
+{
+border-collapse:separate;
+border-spacing:0px;
+}
+
+body {
+   background-color: #250040;
+   color: #FFFFFF;
+}
+
+td {
+    padding: 4px;
+	border:0px solid #2672EC;
+    }
+    
+td.left {
+   width: 220px;
+   }
+
+th {
+    background-color: #4C2C66;
+    color: #FFFFFF;
+	border:0px solid black;
+    font-size: 1.5em;
+}
+table {
+    font-size: 0.75em;
+	border:2px solid #250040;
+table-layout:fixed;
+    width: 340px;
+    }
+
+
+	DIV {overflow:hidden;}
+    </style>
+  </head>
+
+  <body>
+    <div id="loadinfo"><center><br><br><img
+    src="loading.gif"></img></center></div>
+  </body>
+
+</html>
