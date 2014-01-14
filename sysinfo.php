@@ -158,7 +158,14 @@ function cpu2html()
  echo ("<TH COLSPAN=2>Processor</TH>");
  foreach ($cpuinfo as $key => $info)
  {
-   echo ("<TR BGCOLOR=".vtc(100-$info['idle'],60,80)."><TD CLASS=left>Core ".$key." Usage</TD><TD>".(100-$info['idle'])." %</TD></TR>");
+   if ($key == 0) 
+   {
+    echo ("<TR BGCOLOR=".vtc(100-$info['idle'],60,80)."><TD CLASS=left>Total Usage</TD><TD>".(100-$info['idle'])." %</TD></TR>");
+   }
+   else
+   {
+    echo ("<TR BGCOLOR=".vtc(100-$info['idle'],60,80)."><TD CLASS=left>Core ".$key." Usage</TD><TD>".(100-$info['idle'])." %</TD></TR>");
+   }
  }
  echo ("</TABLE>");
 }
